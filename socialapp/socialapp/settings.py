@@ -79,11 +79,10 @@ WSGI_APPLICATION = 'socialapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 DATABASES = {
-    'default': dj_database_url.parse(
-        "postgresql://postgres:vLjBRATDROeXEIxraBXKUDjzYweJEviH@caboose.proxy.rlwy.net:51677/railway",
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 

@@ -1,0 +1,58 @@
+{% load feed_extras %}
+<div class="post-card glass-panel fade-in">
+    <div class="post-header">
+        <img src="{{ post.user.profile.avatar.url }}" class="avatar" alt="{{ post.user.username }}">
+        <div>
+            <a href="{% url 'user_profile' post.user.username %}" style="font-weight: 700;">{{ post.user.username }}</a>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">{{ post.created_at|timesince }} ago</div>
+        </div>
+        {% if request.user == post.user %}
+        <div style="margin-left: auto;">
+            <a href="{% url 'update_post' post.id %}" style="margin-right: 0.5rem; color: var(--text-muted);"><i
+                    class="fa-solid fa-pen"></i></a>
+            <a href="{% url 'delete_post' post.id %}" style="color: var(--bs-red);"><i
+                    class="fa-solid fa-trash"></i></a>
+        </div>
+        {% endif %}
+    </div>
+
+    <h3>{{ post.title }}</h3>
+    <p class="post-content">{{ post.content }}</p>
+    {% if post.image %}
+    <img src="{{ post.image.url }}" class="post-image" alt="Post Image">
+    {% endif %}
+
+    <div class="post-actions">
+        <!-- Like Button -->
+        <div id="like-area-{{ post.id }}">
+            {% include 'feed/partials/like_area.html' %}
+        </div>
+
+        <!-- Comment Button -->
+        <div class="action-btn"
+            onclick="document.getElementById('comment-box-{{ post.id }}').classList.toggle('hidden')">
+            <i class="fa-regular fa-comment"></i> {{ post.comment_count }}
+        </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div id="comment-box-{{ post.id }}" class="hidden" style="margin-top: 1rem; display: none;">
+        <form hx-post="{% url 'add_comment' post.id %}" hx-target="#comments-list-{{ post.id }}" hx-swap="beforeend">
+            {% csrf_token %}
+            <input type="text" name="content" placeholder="Add a comment..." required>
+            <button type="submit" class="btn btn-sm btn-primary" style="margin-top: 0.5rem;">Post</button>
+        </form>
+        <div id="comments-list-{{ post.id }}" style="margin-top: 1rem;">
+            {% for comment in post.comments.all %}
+            {% include 'feed/partials/comment.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        // Toggle helper (inline because simpler than external js file for now)
+        document.getElementById('comment-box-{{ post.id }}').classList.remove('hidden'); // Reset default hidden behavior override
+        document.getElementById('comment-box-{{ post.id }}').style.display = 'none'; // Force hide initially
+
+        // Re-attach toggle listener if needed or just use inline onclick which works.
+    </script>
+</div>

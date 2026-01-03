@@ -1,0 +1,6 @@
+{% load feed_extras %}
+<div class="action-btn" hx-post="{% url 'like_post' post.id %}" hx-target="#like-area-{{ post.id }}"
+    hx-swap="outerHTML">
+    <i class="fa-{% if post|is_liked_by:request.user %}solid{% else %}regular{% endif %} fa-heart"
+        style="{% if post|is_liked_by:request.user %}color: var(--secondary);{% endif %}"></i> {{ post.like_count }}
+</div>

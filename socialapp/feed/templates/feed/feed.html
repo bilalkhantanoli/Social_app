@@ -1,61 +1,38 @@
 {% extends 'feed/main.html' %}
-{% load static %}
-
-
 
 {% block content %}
-
-{% for post in posts %}
-<div class="main panel panel-default z-depth-4">
-    <div class="panel-body">
-
-        <div class="media">
-            <div class="media-left rounded-xl">
-              
-                <img src="https://mms.businesswire.com/media/20190122005910/en/701785/5/Camila-x-MC.jpg"
-                    class="media-object circle">
-                   
-            </div>
-            <div class="media-body">
-                <div class="media-settings">
-                    <p>{{ post.title }}</p> 
-                     <!-- <p>Dennis Ivy</p> -->
-                <span><i class="fa fa-ellipsis-h right "></i></span>
-                </div>
-                
-            </div>
-            
+<div class="post-card glass-panel" style="margin-bottom: 2rem;">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3 style="margin-bottom: 1rem;">Share something...</h3>
+        <!-- We use simple inputs here or standard form rendering -->
+        <div style="margin-bottom: 1rem;">
+            {{ form.title }}
         </div>
-        
-
-        <div class="post">
-            {% if post.image %}
-            <img src="{{ post.image.url }}" alt="Disaster Image" class="not">
-            {% endif %}
-            <!-- <img src="https://mms.businesswire.com/media/20190122005910/en/701785/5/Camila-x-MC.jpg"
-                    class="not"  alt="Sample Image"> -->
-            <!-- <p class="iconsec"><i class="fa fa-heart-o"></i>   <i class="fa fa-share"></i> -->
-                 <span class="right" style="color: black;"><b> Description</b></span>
-                <!-- </p> -->
-           
+        <div style="margin-bottom: 1rem;">
+            {{ form.content }}
         </div>
-        <div style="color: black ;">
-            <p>{{ post.content }}</p>
-            <!-- <p>Dennis IVy</p> -->
+        <div style="margin-bottom: 1rem;">
+            {{ form.image }}
         </div>
-        {% if request.user == post.user %}
-        <center><a href="{% url 'delete_post' post.id %}" class="btn" id="open"><i class="fa "></i>DELETE</a></center>
-        <div id="open-update" style="width: 100%; background-color: gray; border-radius: 3px; margin-top: 3px; padding: 5px;">
-            <center ><a href="{% url 'update_post' post.id %}"><i class="fa"></i>UPDATE</a></center>
-        </div>
-        {% endif %}
-       
-  
-
-
-</div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Post</button>
+    </form>
 </div>
 
-{% endfor %}
+<div id="feed-container">
+    {% include 'feed/partials/post_list.html' %}
+</div>
 
+<script>
+    // Simple toggle logic for comments
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.action-btn') && e.target.closest('.action-btn').innerHTML.includes('fa-comment')) {
+            const card = e.target.closest('.post-card');
+            const box = card.querySelector('[id^="comment-box-"]');
+            if (box) {
+                box.style.display = box.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+    });
+</script>
 {% endblock %}

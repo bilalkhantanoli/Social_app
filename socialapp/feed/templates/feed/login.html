@@ -1,40 +1,30 @@
-
 {% extends 'feed/main.html' %}
+
 {% block content %}
-{% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-<form method="POST" style="margin-top: 70px; color: black;">
-    {% csrf_token %}
-    <!-- Email input -->
-    <div data-mdb-input-init class="form-outline mb-4">
-      <input type="text" name="username" placeholder="Username" required id="form2Example1" class="form-control" />
-      <label class="form-label" for="form2Example1" style="color: black;"></label>Email address</label>
-    </div>
-  
-    <!-- Password input -->
-    <div data-mdb-input-init class="form-outline mb-4" style="color: black;"></div>
-      <input type="password" name="password" placeholder="Password" required id="form2Example2" class="form-control" />
-      <label class="form-label" for="form2Example2" style="color: black;"></label>Password</label>
-    </div>
-  
-  
-    <!-- Submit button -->
-    
-    <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Sign in</button>
-  </form>
-  <div class="text-center" style="color: black;"></div>
-    <p style="color: black;">Not a member? <a style="color: black;" href="{% url 'signup' %}">Register</a></p>
-  </div>
-    <!-- <h2>Login</h2>
+<div style="display: flex; justify-content: center; align-items: center; min-height: 60vh;">
+  <div class="glass-panel" style="padding: 2.5rem; width: 100%; max-width: 400px;">
+    <h2 style="text-align: center; margin-bottom: 2rem;">Login</h2>
     {% if error %}
-        <p style="color: red;">{{ error }}</p>
+    <div
+      style="background: rgba(220, 53, 69, 0.2); border: 1px solid var(--bs-red); padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1rem; color: #ffadad;">
+      {{ error }}
+    </div>
     {% endif %}
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
+    <form method="post">
+      {% csrf_token %}
+      <div style="margin-bottom: 1rem;">
+        <label style="display: block; margin-bottom: 0.5rem;">Username</label>
+        <input type="text" name="username" required>
+      </div>
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.5rem;">Password</label>
+        <input type="password" name="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
     </form>
-    <a href="{% url 'signup' %}">Don't have an account? Sign up</a> -->
+    <p style="text-align: center; margin-top: 1.5rem; color: var(--text-muted);">
+      Don't have an account? <a href="{% url 'signup' %}" style="color: var(--primary);">Sign up</a>
+    </p>
+  </div>
+</div>
 {% endblock %}

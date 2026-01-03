@@ -1,0 +1,6 @@
+{% if request.user != profile_user %}
+<button class="btn {% if is_following %}btn-ghost{% else %}btn-primary{% endif %}"
+    hx-post="{% url 'follow_user' profile_user.username %}" hx-target="#follow-btn-container" hx-swap="innerHTML">
+    {% if is_following %}Unfollow{% else %}Follow{% endif %}
+</button>
+{% endif %}

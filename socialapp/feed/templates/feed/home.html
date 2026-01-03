@@ -1,31 +1,43 @@
 {% extends 'feed/main.html' %}
 
 {% block content %}
-<header class="bg-primary bg-gradient text-white">
-    <div class="container px-4 text-center">
-        <h1 class="fw-bolder">Welcome to ScrollSphere</h1>
-        <p class="lead">Endless Stories, Infinite Connections</p>
-        <a class="btn btn-lg btn-light" href="/feed">Start scrolling!</a>
+<div
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; text-align: center;">
+    <h1
+        style="font-size: 4rem; font-weight: 800; margin-bottom: 1rem; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent;">
+        ScrollSphere
+    </h1>
+    <p style="font-size: 1.5rem; color: var(--text-muted); max-width: 600px; margin-bottom: 3rem;">
+        Endless Stories, Infinite Connections. Experience the next generation of social networking.
+    </p>
+
+    <div style="display: flex; gap: 1.5rem;">
+        <a href="{% url 'signup' %}" class="btn btn-primary" style="font-size: 1.25rem; padding: 1rem 2.5rem;">
+            Get Started <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="{% url 'login' %}" class="btn btn-ghost" style="font-size: 1.25rem; padding: 1rem 2.5rem;">
+            Login
+        </a>
     </div>
-</header>
-<!-- About section-->
-<section id="about">
-    <div class="container px-4">
-        <div class="row gx-4 justify-content-center">
-            <div class="col-lg-8"  style="color: black;">
-                <h2>About ScrollSphere</h2>
-                <p class="lead">ScrollSphere is a next-gen social app designed for seamless engagement, endless content discovery, and meaningful connections. Whether you're here to stay updated, share stories, or interact with a vibrant community, ScrollSphere makes it effortless.</p>
-                <ul>
-                    <li>Smooth infinite scrolling for a seamless user experience</li>
-            <li>Personalized content feed tailored to your interests</li>
-            <li>Real-time engagement through comments, likes, and shares</li>
-            <li>Integrated AI-powered recommendations</li>
-            <li>Privacy-focused  </li>
-                </ul>
-            </div>
+
+    <div class="glass-panel"
+        style="margin-top: 4rem; padding: 2rem; max-width: 800px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+        <div>
+            <i class="fa-solid fa-bolt" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+            <h3>Fast</h3>
+            <p style="color: var(--text-muted);">Instant interactions giving you a seamless experience.</p>
+        </div>
+        <div>
+            <i class="fa-solid fa-infinity" style="font-size: 2rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+            <h3>Infinite</h3>
+            <p style="color: var(--text-muted);">Never run out of content with our smooth infinite scroll.</p>
+        </div>
+        <div>
+            <i class="fa-solid fa-shield-halved"
+                style="font-size: 2rem; color: var(--text-main); margin-bottom: 1rem;"></i>
+            <h3>Secure</h3>
+            <p style="color: var(--text-muted);">Your privacy is our top priority.</p>
         </div>
     </div>
-</section>
-{% include 'feed/footer.html' %}
-
+</div>
 {% endblock %}

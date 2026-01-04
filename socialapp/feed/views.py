@@ -19,12 +19,20 @@ def home(request):
 
 @login_required
 def feed(request):
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('feed')
+    else:
+        form = PostForm()
+    
     posts_list = Post.objects.all().order_by('-created_at')
     paginator = Paginator(posts_list, 10) 
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
-    
-    form = PostForm()
 
     if request.headers.get('HX-Request') and request.GET.get('page'):
         return render(request, 'feed/partials/post_list.html', {'posts': posts})

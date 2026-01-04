@@ -143,10 +143,16 @@ def signup(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("login")
+            user = form.save()
+            # Ensure profile is created
+            if not hasattr(user, 'profile'):
+                from .models import Profile
+                Profile.objects.create(user=user)
+            # Log the user in automatically
+            login(request, user)
+            return redirect("feed")
     else:
-        form = CustomUserCreationForm()
+        form = SignupForm()
     return render(request, "feed/signup.html", {"form": form})
 
 @login_required

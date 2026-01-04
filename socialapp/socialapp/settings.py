@@ -21,16 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5l2z9_@fnj5o7=*^^r1bk2k-43^i9saong)=&^(s!t!uxo0uax'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-5l2z9_@fnj5o7=*^^r1bk2k-43^i9saong)=&^(s!t!uxo0uax')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['socialappproj-env.eba-gbuciki6.us-east-1.elasticbeanstalk.com',
-    '127.0.0.1',
-    'localhost',
-    '172.31.86.222',
-    '3.83.29.195',] # Add your allowed hosts here
+ALLOWED_HOSTS = ['*','127.0.0.1', 'localhost']
+if os.environ.get('ALLOWED_HOSTS'):
+    ALLOWED_HOSTS.extend(os.environ.get('ALLOWED_HOSTS').split(','))
+ALLOWED_HOSTS.append('.azurewebsites.net')
+ALLOWED_HOSTS.append('.elasticbeanstalk.com')
 
 
 # Application definition
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,9 +82,13 @@ WSGI_APPLICATION = 'socialapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': '/var/app/data/db.sqlite3',
     }
 }
+
+database_url = os.environ.get("DATABASE_URL")
+if database_url:
+    DATABASES["default"] = dj_database_url.parse(database_url)
 
 
 
@@ -122,9 +127,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static') ]
+
+# Allow all origins for CSRF (no SSL certificate)
+CSRF_TRUSTED_ORIGINS = [
+    'http://*',
+    'https://*'
+]
+
+# Disable COOP header for HTTP
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

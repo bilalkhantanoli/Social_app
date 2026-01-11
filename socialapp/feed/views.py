@@ -131,6 +131,8 @@ def follow_user(request, username):
     })
 
 def user_login(request):
+    if request.user.is_authenticated:
+        return redirect("feed")
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -182,3 +184,6 @@ def delete_post(request, post_id):
         post_instance.delete()
         return redirect('feed')
     return render(request, 'feed/delete_post.html', {'post': post_instance})
+
+def custom_404(request, exception=None):
+    return render(request, 'feed/404.html', status=404)

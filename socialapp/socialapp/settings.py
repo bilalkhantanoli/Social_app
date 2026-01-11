@@ -132,11 +132,12 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static') ]
 
-# Allow all origins for CSRF (no SSL certificate)
+# Explicitly allow trusted origins for CSRF
 CSRF_TRUSTED_ORIGINS = [
-    'http://*',
-    'https://*'
+    'https://app.cohessionx.app',
 ]
+if os.environ.get('CSRF_TRUSTED_ORIGINS'):
+    CSRF_TRUSTED_ORIGINS.extend(os.environ.get('CSRF_TRUSTED_ORIGINS').split(','))
 
 # Disable COOP header for HTTP
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
@@ -170,3 +171,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'feed'
+LOGOUT_REDIRECT_URL = 'login'

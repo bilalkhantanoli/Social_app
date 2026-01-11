@@ -1,9 +1,10 @@
 {% extends 'feed/main.html' %}
+{% load feed_extras %}
 
 {% block content %}
 <div class="glass-panel" style="padding: 2rem; margin-bottom: 2rem; text-align: center;">
     <div style="margin-bottom: 1rem; position: relative; display: inline-block;">
-        <img src="{{ profile_user.profile.avatar.url }}" class="avatar"
+        <img src="{{ profile_user.profile.avatar|image_url_check }}" class="avatar"
             style="width: 120px; height: 120px; border-width: 4px;" alt="{{ profile_user.username }}">
     </div>
     <h1 style="margin-bottom: 0.5rem;">{{ profile_user.username }}</h1>

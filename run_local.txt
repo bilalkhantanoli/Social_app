@@ -1,0 +1,6 @@
+first activate the python environment
+python -m venv venv
+venv\Scripts\activate
+then run the following commands on root directory
+python manage.py migrate
+python manage.py runserver

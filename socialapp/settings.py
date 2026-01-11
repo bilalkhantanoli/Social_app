@@ -134,7 +134,8 @@ STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static') ]
 
 # Explicitly allow trusted origins for CSRF
 CSRF_TRUSTED_ORIGINS = [
-    'https://app.cohessionx.app',
+    'https://socialapp.cohessionx.app',
+    'https://*.azurewebsites.net',
 ]
 if os.environ.get('CSRF_TRUSTED_ORIGINS'):
     CSRF_TRUSTED_ORIGINS.extend(os.environ.get('CSRF_TRUSTED_ORIGINS').split(','))
